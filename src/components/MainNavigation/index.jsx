@@ -10,13 +10,9 @@ import { useTheme } from '@mui/material/styles';
 
 import MobileNavigation from '../MobileNavigation';
 
-import { usePopover } from '@/hooks';
-
 const MainNavigation = () => {
     const [openNav, setOpenNav] = useState(false);
     const theme = useTheme();
-
-    const userPopover = usePopover();
 
     return (
         <React.Fragment>
@@ -60,11 +56,7 @@ const MainNavigation = () => {
                         <IconButton>
                             <GroupIcon />
                         </IconButton>
-                        <Avatar
-                            onClick={userPopover.handleOpen}
-                            ref={userPopover.anchorRef}
-                            sx={{ cursor: 'pointer' }}
-                        />
+                        <Avatar sx={{ cursor: 'pointer' }} />
                     </Stack>
                 </Stack>
             </Box>

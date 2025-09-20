@@ -12,28 +12,28 @@ import {
     TableBody,
     Avatar,
 } from '@mui/material';
+import moment from 'moment';
 
 import Loader from '../Loader';
-import { leads } from './leads/lead';
 
 import { getInitials } from '@/utils/getInitials';
 
-const LeadListTable = ({ loading }) => {
+const LeadListTable = ({ loading, leads }) => {
     return (
         <Card>
-            <Box sx={{ overflowX: 'auto' }}>
-                <Table sx={{ minWidth: 700 }}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Email</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>created On</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    {loading ? (
-                        <Loader />
-                    ) : (
+            {loading ? (
+                <Loader />
+            ) : (
+                <Box sx={{ overflowX: 'auto' }}>
+                    <Table sx={{ minWidth: 700 }}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Email</TableCell>
+                                <TableCell>Status</TableCell>
+                                <TableCell>created On</TableCell>
+                            </TableRow>
+                        </TableHead>
                         <TableBody>
                             {leads.map((lead) => {
                                 return (
@@ -59,14 +59,18 @@ const LeadListTable = ({ loading }) => {
                                         </TableCell>
                                         <TableCell>{lead.email}</TableCell>
                                         <TableCell>{lead.status}</TableCell>
-                                        <TableCell>{lead.status}</TableCell>
+                                        <TableCell>
+                                            {moment(lead.createdAt).format(
+                                                'MMMM Do, YYYY'
+                                            )}
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
                         </TableBody>
-                    )}
-                </Table>
-            </Box>
+                    </Table>
+                </Box>
+            )}
         </Card>
     );
 };

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -10,11 +12,15 @@ import {
     Button,
 } from '@mui/material';
 import RouterLink from 'next/link';
+import useSWR from 'swr';
 
 import LeadListTable from '@/components/LeadListTable';
 import { paths } from '@/paths';
+import { fetcher } from '@/utils/fetcher';
 
 const Dashboard = () => {
+    const { data, isLoading } = useSWR('/lead', fetcher);
+
     return (
         <Box
             component="main"
@@ -41,7 +47,7 @@ const Dashboard = () => {
                             Add
                         </Button>
                     </Stack>
-                    <LeadListTable loading={false} />
+                    <LeadListTable loading={isLoading} leads={data?.leads} />
                 </Stack>
             </Container>
         </Box>
