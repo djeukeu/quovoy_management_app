@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { useFormik } from 'formik';
 import RouterLink from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as yup from 'yup';
 
 import { paths } from '@/paths';
@@ -36,23 +37,49 @@ const statusOptions = [
         value: 'NEW',
     },
     {
-        label: 'ADMIN',
-        value: 'ADMIN',
+        label: 'ENGAGED',
+        value: 'ENGAGED',
+    },
+    {
+        label: 'PROPOSAL_SENT',
+        value: 'PROPOSAL_SENT',
+    },
+    {
+        label: 'CLOSED_WON',
+        value: 'CLOSED_WON',
+    },
+    {
+        label: 'CLOSED_LOST',
+        value: 'CLOSED_LOST',
     },
 ];
 
-const NewLead = () => {
-    const validationSchema = yup.object({
-        name: yup.string().required('name required'),
-        email: yup.string().required('email required'),
-        status: yup.string().required('status required'),
-    });
+const validationSchema = yup.object({
+    name: yup.string().required('name required'),
+    email: yup.string().required('email required'),
+    status: yup.string().required('status required'),
+});
 
+const NewLead = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const router = useRouter();
     const formik = useFormik({
         initialValues,
         validationSchema,
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values) => {
+            setIsLoading(true);
+            await fetch(process.env.NEXT_PUBLIC_API_URL + '/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: values.name,
+                    email: values.email,
+                    status: values.status,
+                }),
+            });
+            router.push('/dashboard');
+            setIsLoading(false);
         },
     });
 
@@ -101,7 +128,7 @@ const NewLead = () => {
                                             formik.errors.name
                                         }
                                         label="Name"
-                                        name="lastname"
+                                        name="name"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
                                         value={formik.values.name}
@@ -169,6 +196,7 @@ const NewLead = () => {
                             <Button
                                 disabled={formik.isSubmitting}
                                 type="submit"
+                                loading={isLoading}
                                 variant="contained">
                                 Add
                             </Button>
