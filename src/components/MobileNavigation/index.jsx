@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Box, Button, Divider, Drawer, Stack, Typography } from '@mui/material';
+import { Box, Divider, Drawer, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import RouterLink from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -28,15 +28,7 @@ const renderNavItems = ({ items = [], pathname }) => {
     );
 };
 
-const NavItem = ({
-    disabled,
-    external,
-    href,
-    icon,
-    matcher,
-    pathname,
-    title,
-}) => {
+const NavItem = ({ external, href, title }) => {
     return (
         <li>
             <Box

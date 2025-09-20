@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import GroupIcon from '@mui/icons-material/Group';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Avatar, Badge, Box, IconButton, Stack, Tooltip } from '@mui/material';
+import { Avatar, Box, IconButton, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import MobileNavigation from '../MobileNavigation';

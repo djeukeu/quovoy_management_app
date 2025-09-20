@@ -53,7 +53,15 @@ export default defineConfig([
             'prettier/prettier': 'error',
             'no-console': 'warn',
             'react/display-name': 'off',
-            'no-unused-vars': ['error'],
+            'no-unused-vars': [
+                'error',
+                {
+                    varsIgnorePattern: '^React$',
+                    args: 'after-used',
+                    ignoreRestSiblings: true,
+                },
+            ],
+            'react/react-in-jsx-scope': 'off',
         },
         settings: {
             react: {
