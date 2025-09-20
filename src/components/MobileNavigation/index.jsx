@@ -1,0 +1,145 @@
+'use client';
+
+import React from 'react';
+
+import { Box, Button, Divider, Drawer, Stack, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import RouterLink from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import { navigationItems } from '@/navigationItems';
+
+const renderNavItems = ({ items = [], pathname }) => {
+    const children = items.reduce((acc, curr) => {
+        const { key, ...item } = curr;
+
+        acc.push(<NavItem key={key} pathname={pathname} {...item} />);
+
+        return acc;
+    }, []);
+
+    return (
+        <Stack
+            component="ul"
+            spacing={1}
+            sx={{ listStyle: 'none', m: 0, p: 0 }}>
+            {children}
+        </Stack>
+    );
+};
+
+const NavItem = ({
+    disabled,
+    external,
+    href,
+    icon,
+    matcher,
+    pathname,
+    title,
+}) => {
+    return (
+        <li>
+            <Box
+                {...(href
+                    ? {
+                          component: external ? 'a' : RouterLink,
+                          href,
+                          target: external ? '_blank' : undefined,
+                          rel: external ? 'noreferrer' : undefined,
+                      }
+                    : { role: 'button' })}
+                sx={{
+                    alignItems: 'center',
+                    borderRadius: 1,
+                    color: 'var(--NavItem-color)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flex: '0 0 auto',
+                    gap: 1,
+                    p: '6px 16px',
+                    position: 'relative',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap',
+                }}>
+                <Box sx={{ flex: '1 1 auto' }}>
+                    <Typography
+                        component="span"
+                        sx={{
+                            color: 'inherit',
+                            fontSize: '0.875rem',
+                            fontWeight: 500,
+                            lineHeight: '28px',
+                        }}>
+                        {title}
+                    </Typography>
+                </Box>
+            </Box>
+        </li>
+    );
+};
+
+const MobileNavigation = ({ open, onClose }) => {
+    const pathname = usePathname();
+    const theme = useTheme();
+
+    return (
+        <Drawer
+            PaperProps={{
+                sx: {
+                    '--MobileNav-background': theme.palette.neutral[900],
+                    '--MobileNav-color': theme.palette.common.white,
+                    '--NavItem-color': theme.palette.neutral[300],
+                    '--NavItem-hover-background': 'rgba(255, 255, 255, 0.04)',
+                    '--NavItem-active-background': theme.palette.primary.main,
+                    '--NavItem-active-color':
+                        theme.palette.primary.contrastText,
+                    '--NavItem-disabled-color': theme.palette.neutral[500],
+                    '--NavItem-icon-color': theme.palette.neutral[400],
+                    '--NavItem-icon-active-color':
+                        theme.palette.primary.contrastText,
+                    '--NavItem-icon-disabled-color': theme.palette.neutral[600],
+                    bgcolor: 'var(--MobileNav-background)',
+                    color: 'var(--MobileNav-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    maxWidth: '100%',
+                    scrollbarWidth: 'none',
+                    width: 'var(--MobileNav-width)',
+                    zIndex: 'var(--MobileNav-zIndex)',
+                    '&::-webkit-scrollbar': { display: 'none' },
+                },
+            }}
+            onClose={onClose}
+            open={open}>
+            <Stack spacing={2} sx={{ p: 3 }}>
+                <Box
+                    sx={{
+                        alignItems: 'center',
+                        backgroundColor: theme.palette.neutral[900],
+                        border: `1px solid ${theme.palette.neutral[700]}`,
+                        borderRadius: '12px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        p: '4px 12px',
+                    }}>
+                    <Box sx={{ flex: '1 1 auto' }}>
+                        <Typography
+                            color={theme.palette.neutral[400]}
+                            variant="body2">
+                            Management App
+                        </Typography>
+                        <Typography color="inherit" variant="subtitle1">
+                            Management App
+                        </Typography>
+                    </Box>
+                </Box>
+            </Stack>
+            <Divider sx={{ borderColor: theme.palette.neutral[700] }} />
+            <Box component="nav" sx={{ flex: '1 1 auto', p: '12px' }}>
+                {renderNavItems({ pathname, items: navigationItems })}
+            </Box>
+        </Drawer>
+    );
+};
+
+export default MobileNavigation;
