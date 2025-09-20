@@ -129,7 +129,7 @@ const SideNavigation = () => {
                             Management App
                         </Typography>
                         <Typography color="inherit" variant="subtitle1">
-                            Management App
+                            {process.env.NEXT_PUBLIC_ENV}
                         </Typography>
                     </Box>
                 </Box>

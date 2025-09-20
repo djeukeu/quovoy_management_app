@@ -53,6 +53,7 @@ export default defineConfig([
             'prettier/prettier': 'error',
             'no-console': 'warn',
             'react/display-name': 'off',
+            'no-unused-vars': ['error'],
         },
         settings: {
             react: {
